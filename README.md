@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Name: [ใส่ชื่อโปรเจกต์ของคุณ]
 
-## Getting Started
+## 🚀 Overview
 
-First, run the development server:
+[อธิบายสั้นๆ ว่าโปรเจกต์นี้คืออะไร เช่น ระบบ Chat แบบ Real-time หรือ Dashboard แสดงผลข้อมูลหุ้น]
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔗 Deliverables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Code Repository:** [ใส่ Link GitHub ของคุณที่นี่]
+- **Deployed Application:** [ใส่ Link เว็บที่ Deploy แล้วที่นี่ เช่น Vercel/Netlify]
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🏗️ Development Planning Documentation
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+การจัดวาง Folder และไฟล์ในโปรเจกต์นี้เน้นความอ่านง่ายและแยกส่วนหน้าที่ชัดเจน (Separation of Concerns):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/components/`: UI Components แยกตามหน้าที่ (เช่น Common, Layout, Feature-based)
+- `src/hooks/`: Custom React Hooks สำหรับจัดการ Logic ที่ใช้ซ้ำ
+- `src/services/`: จัดการการเชื่อมต่อ API และ Real-time Services (Firebase/Socket.io)
+- `src/store/`: State Management (เช่น Zustand, Redux หรือ Context API)
+- `src/pages/`: ส่วนประกอบของหน้าจอหลักในแอปพลิเคชัน
+- `src/styles/`: Global styles และ Configuration ของ CSS Framework
 
-## Deploy on Vercel
+### 2. Design (UI/UX)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+หลักการออกแบบที่ใช้เพื่อรองรับผู้ใช้งานในทุกอุปกรณ์:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Responsive Design:** ใช้แนวคิด Mobile-First โดยใช้ Tailwind CSS Breakpoints ในการปรับ Layout
+  - _Mobile:_ แสดงผลแบบ Single Column เพื่อประหยัดพื้นที่
+  - _Desktop:_ ใช้ Multi-column Layout และขยายขนาด Elements ให้เหมาะสม
+- **User Experience:** \* มีการแสดง **Loading States** และ **Skeleton Screens** ระหว่างรอข้อมูล
+  - ใช้ **Feedback Interaction** เช่น Toast notifications เมื่อส่งข้อมูลสำเร็จหรือเกิดข้อผิดพลาด
+
+### 3. Component Architecture
+
+สถาปัตยกรรมของ Component ถูกออกแบบให้มีความยืดหยุ่น:
+
+- **Smart/Container Components:** จัดการเรื่อง Data Fetching และ Business Logic (เช่น `ChatRoom.tsx`)
+- **Dumb/Presentational Components:** รับข้อมูลผ่าน Props และเน้นการแสดงผล (เช่น `MessageBubble.tsx`)
+- **Shared Components:** UI พื้นฐานที่ใช้ร่วมกันทั้งโปรเจกต์ เช่น `Button`, `Input`, `Modal`
+
+### 4. Real-Time Synchronization Flow
+
+ลำดับการทำงานของระบบเพื่อรักษาความสดใหม่ของข้อมูล (Data Freshness):
+
+1.  **Connection:** แอปทำการ Establish Connection กับ Server ทันทีที่ Component เริ่มทำงาน (Mount)
+2.  **Listener:** ใช้ Listener Function คอยดักจับ Event การเปลี่ยนแปลงของข้อมูลจาก Database
+3.  **State Sync:** เมื่อมีการเปลี่ยนแปลงเกิดขึ้น (เช่น ข้อมูลชุดใหม่ถูกเพิ่ม) Listener จะส่งข้อมูลมาที่ Frontend เพื่ออัปเดต Local State ทันทีโดยไม่ต้อง Refresh หน้าจอ
+4.  **Error Handling:** มีระบบ Re-connection อัตโนมัติในกรณีที่หลุดการเชื่อมต่อ
+
+---
+
+## 🛠️ Setup Instructions
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [link-github-ของคุณ]
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Set up environment variables:**
+    สร้างไฟล์ `.env` แล้วใส่ค่า Configuration (ถ้ามี)
+4.  **Run the project:**
+    ```bash
+    npm run dev
+    ```
+
+---
+
+## ✨ Bonus Features (ถ้ามี)
+
+- [ตัวอย่าง: รองรับ Dark Mode]
+- [ตัวอย่าง: มีระบบแจ้งเตือนผ่าน Browser]
