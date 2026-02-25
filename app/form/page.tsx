@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { pusherClient } from "../../config/pusher";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import RadioGroup from "../../components/ui/RadioGroup";
 import Select from "../../components/ui/Select";
 import { NATIONALITIES } from "../../constant/nationality.constant";
@@ -22,7 +22,6 @@ const FormPage = () => {
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    if (!userId) return;
     const channel = pusherClient.subscribe("presence-channel");
 
     channel.bind("pusher:subscription_succeeded", (members: any) => {
@@ -33,7 +32,7 @@ const FormPage = () => {
     return () => {
       pusherClient.unsubscribe("presence-channel");
     };
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     const syncData = async () => {
