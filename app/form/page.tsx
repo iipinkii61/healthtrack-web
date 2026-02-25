@@ -50,7 +50,6 @@ const FormPage = () => {
   }, [allFields, userId]);
 
   const handleFormSubmit = async (data: any) => {
-    // เพียงแค่เปลี่ยน status เป็น submit
     await fetch("/api/submit-form", {
       method: "POST",
       body: JSON.stringify({
