@@ -16,14 +16,16 @@ const Input = ({
   label?: string;
 }) => {
   return (
-    <>
+    <div>
       {label && (
         <label htmlFor={name} className="text-[14px]">
-          {label}
+          {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <input
-        {...register(name, { required: required })}
+        {...register(name, {
+          required: required ? "This field is required" : false,
+        })}
         id={name}
         name={name}
         type={type || "text"}
@@ -33,7 +35,7 @@ const Input = ({
           placeholder || name.charAt(0).toUpperCase() + name.slice(1)
         }
       />
-    </>
+    </div>
   );
 };
 

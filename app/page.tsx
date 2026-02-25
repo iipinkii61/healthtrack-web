@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import Input from "./components/ui/Input";
-import Button from "./components/ui/Button";
+import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
 
 const LoginPage = () => {
   const { register, handleSubmit } = useForm();
@@ -40,7 +40,9 @@ const LoginPage = () => {
               type="password"
             />
             <Link href="/admin">
-              <Button variant="solid">Sign In</Button>
+              <Button variant="solid" className="w-full">
+                Sign In
+              </Button>
             </Link>
 
             <div className="mt-10 bg-[#2563EB]/5 border border-[#2563EB]/20 rounded-xl p-6">
@@ -50,7 +52,9 @@ const LoginPage = () => {
                 save time.
               </p>
               <Link href="/form">
-                <Button variant="outline">Fill Patient Form</Button>
+                <Button variant="outline" className="w-full">
+                  Fill Patient Form
+                </Button>
               </Link>
             </div>
           </form>

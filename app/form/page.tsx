@@ -1,50 +1,166 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { pusherClient } from "../config/pusher";
+import { pusherClient } from "../../config/pusher";
+import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
+import { set, useForm } from "react-hook-form";
+import RadioGroup from "../../components/ui/RadioGroup";
+import Select from "../../components/ui/Select";
+import { NATIONALITIES } from "../../constant/nationality.constant";
 
 const FormPage = () => {
-  const [text, setText] = useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isValid, errors },
+  } = useForm({
+    mode: "onChange",
+  });
+  const allFields = watch();
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const randomName = "U-" + Math.floor(1000 + Math.random() * 9000);
-    setUserId(randomName);
-  }, []);
+    if (!userId) return;
+    const channel = pusherClient.subscribe("presence-channel");
 
-  const sendMessage = async () => {
+    channel.bind("pusher:subscription_succeeded", (members: any) => {
+      setUserId(members.me.id);
+      console.log("Subscribed to presence-channel with members:", members);
+    });
+
+    return () => {
+      pusherClient.unsubscribe("presence-channel");
+    };
+  }, [userId]);
+
+  useEffect(() => {
+    const syncData = async () => {
+      await fetch("/api/pusher/typing", {
+        method: "POST",
+        body: JSON.stringify({
+          userId,
+          formData: allFields,
+        }),
+      });
+    };
+
+    const timeout = setTimeout(syncData, 1000);
+    return () => clearTimeout(timeout);
+  }, [allFields, userId]);
+
+  const handleFormSubmit = async (data: any) => {
+    // เพียงแค่เปลี่ยน status เป็น submit
     await fetch("/api/submit-form", {
       method: "POST",
-      body: JSON.stringify({ message: text, userId }),
+      body: JSON.stringify({
+        userId,
+        status: "submit",
+      }),
     });
-    setText("");
-  };
-
-  const handleTyping = () => {
-    const channel = pusherClient.subscribe("private-channel");
-    channel.trigger("client-typing", { username: userId });
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Test websocket</h1>
+    <div className="h-screen flex items-center justify-center">
+      <div className="max-w-4xl">
+        <p className="md:text-center text-[30px] font-bold">Personal Details</p>
+        <p className="md:text-center my-1">
+          Please provide your legal identification information.
+        </p>
 
-      <div
-        style={{
-          marginBottom: "40px",
-          border: "1px solid #ccc",
-          padding: "10px",
-        }}
-      >
-        <p>UserId: {userId}</p>
-        <input
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            handleTyping();
-          }}
-        />
-        <button onClick={sendMessage}>Submit form</button>
+        <div className="md:bg-white md:shadow-lg rounded-xl mt-10 p-5 w-full">
+          <div className="md:p-5">
+            <form
+              onSubmit={handleSubmit(handleFormSubmit)}
+              className="space-y-5"
+            >
+              <div className="grid md:grid-cols-3 gap-5">
+                <Input
+                  register={register}
+                  label="First Name"
+                  name="firstName"
+                  placeholder="e.g. Anton"
+                />
+                {errors.firstName && (
+                  <span className="text-xs text-red-500">
+                    {String(errors.firstName.message)}
+                  </span>
+                )}
+                <Input
+                  register={register}
+                  label="Middle Name"
+                  name="middleName"
+                  placeholder="Optional"
+                  required={false}
+                />
+                <Input
+                  register={register}
+                  label="Last Name"
+                  name="lastName"
+                  placeholder="e.g. Lee"
+                />
+              </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                <Input
+                  register={register}
+                  label="Date of Birth"
+                  name="dateOfBirth"
+                  type="date"
+                />
+                <RadioGroup
+                  register={register}
+                  label="Gender"
+                  name="gender"
+                  required={true}
+                />
+              </div>
+              <Input
+                register={register}
+                label="Emergency Contact"
+                name="emergencyContact"
+                placeholder="Enter emergency contact details"
+              />
+              <div className="grid md:grid-cols-2 gap-5">
+                <Select
+                  register={register}
+                  label="Nationality"
+                  name="nationality"
+                  required={true}
+                  options={NATIONALITIES}
+                />
+                <Input
+                  register={register}
+                  label="Religion (optional)"
+                  name="religion"
+                  required={false}
+                  placeholder="Enter religion if applicable"
+                />
+              </div>
+              <div className="flex gap-4 items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  id="consent"
+                  {...register("consent", { required: true })}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="consent"
+                  className="text-sm text-gray-700 cursor-pointer"
+                >
+                  I consent to the processing of my personal data in accordance
+                  with the privacy policy.
+                </label>
+              </div>
+              <div className="flex justify-end">
+                {/* <Button className="w-fit" type="submit" disabled={!isValid}> */}
+                <Button className="w-fit" type="submit" disabled={!isValid}>
+                  Continue
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
