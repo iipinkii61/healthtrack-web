@@ -1,5 +1,14 @@
 import { UseFormRegister } from "react-hook-form";
 
+interface InputProps<T extends FieldValues> {
+  register: UseFormRegister<T>;
+  name: keyof T;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  label?: string;
+}
+
 const Input = ({
   register,
   name,
@@ -7,14 +16,7 @@ const Input = ({
   required = true,
   placeholder,
   label,
-}: {
-  register: UseFormRegister<any>;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-  label?: string;
-}) => {
+}: InputProps) => {
   return (
     <div>
       {label && (

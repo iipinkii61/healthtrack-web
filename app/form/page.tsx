@@ -21,6 +21,7 @@ const FormPage = () => {
   const allFields = watch();
   const [userId, setUserId] = useState("");
 
+  // subscribe to channel and get userId to form
   useEffect(() => {
     const channel = pusherClient.subscribe("presence-channel");
 
@@ -34,26 +35,28 @@ const FormPage = () => {
     };
   }, []);
 
+  // sync form data real-time
   useEffect(() => {
     const syncData = async () => {
       await fetch("/api/pusher/typing", {
         method: "POST",
         body: JSON.stringify({
-          userId,
+          id: userId,
           formData: allFields,
         }),
       });
     };
 
-    const timeout = setTimeout(syncData, 1000);
+    const timeout = setTimeout(syncData, 3000);
     return () => clearTimeout(timeout);
   }, [allFields, userId]);
 
-  const handleFormSubmit = async (data: any) => {
+  // submit form
+  const handleFormSubmit = async () => {
     await fetch("/api/submit-form", {
       method: "POST",
       body: JSON.stringify({
-        userId,
+        id: userId,
         status: "submit",
       }),
     });
@@ -151,7 +154,6 @@ const FormPage = () => {
                 </label>
               </div>
               <div className="flex justify-end">
-                {/* <Button className="w-fit" type="submit" disabled={!isValid}> */}
                 <Button className="w-fit" type="submit" disabled={!isValid}>
                   Continue
                 </Button>

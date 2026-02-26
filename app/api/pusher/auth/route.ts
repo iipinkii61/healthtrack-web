@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { pusherServer } from "../../../../config/pusher";
 
-export const POST = async (req: any) => {
+export const POST = async (req: NextRequest) => {
   try {
     const data = await req.formData();
-    const socketId = data.get("socket_id");
-    const channel = data.get("channel_name");
+    const socketId = data.get("socket_id") as string;
+    const channel = data.get("channel_name") as string;
 
     const randomName = "U-" + Math.floor(1000 + Math.random() * 9000);
 

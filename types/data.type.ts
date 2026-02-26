@@ -1,3 +1,5 @@
+import { EFormStatus } from "@/enum/form.enum";
+
 export interface IUserProfile {
   consent: boolean;
   dateOfBirth: string;
@@ -11,7 +13,11 @@ export interface IUserProfile {
 }
 
 export interface IFormData extends IUserProfile {
-  id: string | number;
-  userId: string | number;
-  status?: "active" | "inactive" | "submit";
+  id: string;
+  status?: EFormStatus;
+}
+
+export interface ImemberEventData {
+  id: string;
+  info: IUserProfile;
 }

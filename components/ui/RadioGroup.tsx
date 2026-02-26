@@ -1,4 +1,13 @@
-const RadioGroup = ({ register, label, required, name }: any) => {
+import { UseFormRegister } from "react-hook-form";
+
+interface RadioProps<T extends FieldValues> {
+  register: UseFormRegister<T>;
+  label?: string;
+  required?: boolean;
+  name: keyof T;
+}
+
+const RadioGroup = ({ register, label, required, name }: RadioProps) => {
   const genders = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },

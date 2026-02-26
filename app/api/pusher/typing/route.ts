@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, formData } = await req.json();
+    const { id, formData } = await req.json();
     await pusherServer.trigger("presence-channel", "typing-event", {
-      userId,
+      id,
       formData,
     });
 

@@ -1,28 +1,28 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm();
+  const router = useRouter();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = () => {
+    if (isValid) {
+      router.push("/admin");
+    }
   };
 
   return (
     <div className="grid lg:grid-cols-2 h-screen">
-      <div className="relative bg-blue-200 hidden lg:block">
-        {/* <Image
-          src="/images/bg-login.png"
-          alt="Login Image"
-          fill
-          className="object-cover object-bottom"
-        /> */}
-      </div>
+      <div className="relative bg-blue-200 hidden lg:block" />
       <div className="flex items-center justify-center">
         <div className="w-[70%]">
           <h1 className="text-4xl font-bold">Staff Login</h1>
@@ -32,18 +32,18 @@ const LoginPage = () => {
               name="email"
               label="Email address"
               type="email"
+              required
             />
             <Input
               register={register}
               name="password"
               label="Password"
               type="password"
+              required
             />
-            <Link href="/admin">
-              <Button variant="solid" className="w-full">
-                Sign In
-              </Button>
-            </Link>
+            <Button variant="solid" type="submit" className="w-full">
+              Sign In
+            </Button>
 
             <div className="mt-10 bg-[#2563EB]/5 border border-[#2563EB]/20 rounded-xl p-6">
               <h1 className="text-lg font-bold">New Patient?</h1>

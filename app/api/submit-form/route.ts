@@ -1,11 +1,11 @@
+import { NextRequest } from "next/server";
 import { pusherServer } from "../../../config/pusher";
 
-export const POST = async (req) => {
+export const POST = async (req: NextRequest) => {
   const data = await req.json();
 
-  // ส่ง event เพื่อแจ้งว่าฟอร์มได้ submit แล้ว (เปลี่ยน status เป็น submit)
   await pusherServer.trigger("presence-channel", "form-submitted", {
-    userId: data.userId,
+    id: data.id,
     status: data.status,
     submittedAt: new Date().toLocaleTimeString(),
   });
