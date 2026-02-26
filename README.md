@@ -138,27 +138,34 @@ Root Layout
 
 มีการใช้ **Pusher** เพื่อซิงค์ข้อมูลของผู้ป่วยระหว่างผู้ใช้งานหลายคนและเซสชันต่างๆ แบบ real-time
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Multiple Clients                          │
-│    (Browser tabs, different users, mobile clients)           │
-└──────────────────────┬──────────────────────────────────────┘
-                       │
-                       │ WebSocket Connection
-                       ↓
-┌─────────────────────────────────────────────────────────────┐
-│                   Pusher Service                             │
-│    (Real-time messaging service with presence tracking)     │
-└──────────────────────┬──────────────────────────────────────┘
-                       │
-                       │ HTTP API (Server)
-                       ↓
-┌─────────────────────────────────────────────────────────────┐
-│              Next.js Backend (API Routes)                    │
-│  • Authentication handler                                    │
-│  • Form submission processor                                 │
-│  • Event broadcaster                                         │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User Browser (Client)
+    participant API as Next.js API Route
+    participant P as Pusher Server
+    participant A as Admin Dashboard
+
+    Note over U, A: Phase 1: Connection & Subscription
+    U->>P: Subscribe to 'presence-channel'
+    A->>P: Subscribe to 'presence-channel'
+    P-->>U: pusher:subscription_succeeded (Get userId)
+    P-->>A: pusher:subscription_succeeded
+
+    Note over U, A: Phase 2: Real-time Data Syncing
+    U->>U: User types in Form
+    Note right of U: Triggered every 3s (Debounced)
+    U->>API: POST /api/pusher/typing (userId, formData)
+    API->>P: pusher.trigger('typing-event')
+    P-->>A: Broadcast Data to Admin
+    A->>A: Update PatientInfoCard UI
+
+    Note over U, A: Phase 3: Form Submission
+    U->>U: Click "Continue" & Consent
+    U->>API: POST /api/submit-form (status: 'submit')
+    API->>P: pusher.trigger('status-update')
+    P-->>A: Change Status Badge to "Submitted"
+    U->>U: Show "Submission Successful" Modal
 ```
 
 ### Data flow
@@ -215,12 +222,6 @@ POST /api/submit-form
   │   })
   └─ Response: { status: "Form submitted!" }
 ```
-
-### Data synchronization cycle
-
-1. **Connection**: แอปพลิเคชันสร้างการเชื่อมต่อ WebSocket กับ Pusher เมื่อ component render
-2. **Listener**: เซิร์ฟเวอร์ pusher ดูแลการเปลี่ยนแปลงข้อมูล
-3. **State Sync**: เมื่อมีการเปลี่ยนแปลง pusher จะส่งข้อมูลไปที่ frontend เพื่ออัปเดต status/value โดยไม่ต้องรีเฟรชหน้า
 
 ## 🛠️ เทคโนโลยีที่ใช้
 
