@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { pusherClient } from "../../config/pusher";
 import Table from "@/components/ui/Table";
+import Button from "@/components/ui/Button";
 import { IFormData, ImemberEventData, IUserProfile } from "@/types/data.type";
 import PatientInfoCard from "@/components/PatientInfoCard/PatientInfoCard";
 import { EFormStatus } from "@/enum/form.enum";
+import Link from "next/link";
 
 const AdminPage = () => {
   const [activeForm, setActiveForm] = useState<IFormData[]>([]);
@@ -82,7 +84,7 @@ const AdminPage = () => {
   }, []);
 
   const columns = [
-    { header: "ID", accessor: "userId" },
+    { header: "ID", accessor: "id" },
     {
       header: "Full Name",
       accessor: (row: IFormData) =>
@@ -126,12 +128,15 @@ const AdminPage = () => {
 
   return (
     <>
-      <div className="bg-white shadow-sm h-20 px-6 xl:px-10 flex items-center justify-between mb-6">
+      <div className="bg-white shadow-sm min-h-20 p-6 xl:px-10 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+        <Link href="/">
+          <Button variant="outline">Logout</Button>
+        </Link>
       </div>
-      <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-8">
+      <div className="min-h-screen p-4 md:p-8">
         {/* --- Desktop View (Table) --- */}
-        <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden max-w-7xl mx-auto">
           <div className="p-4 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
             <div className="flex gap-2 bg-gray-50 p-1 rounded-lg">
               <TabButton label="All (128)" active />
@@ -139,9 +144,7 @@ const AdminPage = () => {
               <TabButton label="Active (12)" />
             </div>
             <div className="flex gap-2">
-              <button className="px-4 py-2 text-sm border rounded-lg flex items-center gap-2 hover:bg-gray-50">
-                <span>Export</span>
-              </button>
+              <Button variant="default">Export</Button>
             </div>
           </div>
           <div>

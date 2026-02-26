@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import RadioGroup from "../../components/ui/RadioGroup";
 import Select from "../../components/ui/Select";
 import { NATIONALITIES } from "../../constant/nationality.constant";
+import { ArrowRightIcon } from "@/components/Icon";
+import Link from "next/link";
 
 const FormPage = () => {
   const {
@@ -63,15 +65,25 @@ const FormPage = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center">
-      <div className="max-w-4xl">
-        <p className="md:text-center text-[30px] font-bold">Personal Details</p>
-        <p className="md:text-center my-1">
-          Please provide your legal identification information.
-        </p>
+    <div className="h-screen">
+      <div className="md:hidden bg-white shadow-sm min-h-15 p-5 xl:px-10 flex items-center justify-between">
+        <Link href="/">
+          <ArrowRightIcon className="mr-2 rotate-180 w-10 h-10" />
+        </Link>
+      </div>
 
-        <div className="md:bg-white md:shadow-lg rounded-xl mt-10 p-5 w-full">
-          <div className="md:p-5">
+      <div className="max-w-4xl mx-auto p-6 md:p-8">
+        <div className="">
+          <p className="md:text-center text-[30px] font-bold">
+            Personal Details
+          </p>
+          <p className="md:text-center my-1">
+            Please provide your legal identification information.
+          </p>
+        </div>
+
+        <div className="md:bg-white md:shadow-lg rounded-xl mt-10 md:p-5 w-full">
+          <div>
             <form
               onSubmit={handleSubmit(handleFormSubmit)}
               className="space-y-5"
@@ -138,12 +150,12 @@ const FormPage = () => {
                   placeholder="Enter religion if applicable"
                 />
               </div>
-              <div className="flex gap-4 items-center cursor-pointer">
+              <div className="flex gap-4 cursor-pointer">
                 <input
                   type="checkbox"
                   id="consent"
                   {...register("consent", { required: true })}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 "
                 />
                 <label
                   htmlFor="consent"
@@ -153,9 +165,15 @@ const FormPage = () => {
                   with the privacy policy.
                 </label>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                <Link href="/">
+                  <Button variant="default" className="w-fit" type="button">
+                    Cancel
+                  </Button>
+                </Link>
                 <Button className="w-fit" type="submit" disabled={!isValid}>
                   Continue
+                  <ArrowRightIcon className="ml-1" />
                 </Button>
               </div>
             </form>

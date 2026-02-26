@@ -7,7 +7,7 @@ export const POST = async (req: NextRequest) => {
     const socketId = data.get("socket_id") as string;
     const channel = data.get("channel_name") as string;
 
-    const randomName = "U-" + Math.floor(1000 + Math.random() * 9000);
+    const randomName = "u-" + Math.floor(1000 + Math.random() * 9000);
 
     const presenceData = {
       user_id: randomName,
