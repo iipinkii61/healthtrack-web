@@ -163,8 +163,8 @@ sequenceDiagram
     Note over U, A: Phase 3: Form Submission
     U->>U: Click "Continue" & Consent
     U->>API: POST /api/submit-form (status: 'submit')
-    API->>P: pusher.trigger('status-update')
-    P-->>A: Change Status Badge to "Submitted"
+    API->>P: pusher.trigger('form-submitted')
+    P-->>A: Change Status Badge to "Submit"
     U->>U: Show "Submission Successful" Modal
 ```
 
