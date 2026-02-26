@@ -80,7 +80,7 @@ const FormPage = () => {
         </Link>
       </div>
 
-      <div className="max-w-4xl mx-auto p-6 md:p-8">
+      <div className="max-w-4xl mx-auto pb-20 p-6 md:p-8">
         <div className="">
           <p className="md:text-center text-[30px] font-bold">
             Personal Details
@@ -99,15 +99,11 @@ const FormPage = () => {
               <div className="grid md:grid-cols-3 gap-5">
                 <Input
                   register={register}
+                  errorForm={errors}
                   label="First Name"
                   name="firstName"
                   placeholder="e.g. Anton"
                 />
-                {errors.firstName && (
-                  <span className="text-xs text-red-500">
-                    {String(errors.firstName.message)}
-                  </span>
-                )}
                 <Input
                   register={register}
                   label="Middle Name"
@@ -117,6 +113,7 @@ const FormPage = () => {
                 />
                 <Input
                   register={register}
+                  errorForm={errors}
                   label="Last Name"
                   name="lastName"
                   placeholder="e.g. Lee"
@@ -125,26 +122,59 @@ const FormPage = () => {
               <div className="grid md:grid-cols-2 gap-5">
                 <Input
                   register={register}
+                  errorForm={errors}
                   label="Date of Birth"
                   name="dateOfBirth"
                   type="date"
                 />
                 <RadioGroup
                   register={register}
+                  errorForm={errors}
                   label="Gender"
                   name="gender"
                   required={true}
                 />
               </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                <Input
+                  register={register}
+                  errorForm={errors}
+                  label="Phone Number"
+                  name="phone"
+                  type="tel"
+                  placeholder="e.g. 0123456789"
+                />
+                <Input
+                  register={register}
+                  errorForm={errors}
+                  label="Email"
+                  name="email"
+                  required={true}
+                  type="email"
+                  placeholder="e.g. antonlee123@example.com"
+                />
+              </div>
               <Input
                 register={register}
-                label="Emergency Contact"
-                name="emergencyContact"
-                placeholder="Enter emergency contact details"
+                errorForm={errors}
+                label="Address"
+                name="address"
+                required={true}
+                placeholder="e.g. 123 Main Street, District, Province, Postal Code"
+                maxLength={500}
               />
-              <div className="grid md:grid-cols-2 gap-5">
+              <div className="grid md:grid-cols-3 gap-5">
+                <Input
+                  register={register}
+                  errorForm={errors}
+                  label="Preferred Language"
+                  name="lang"
+                  required
+                  placeholder="e.g. English, Thai"
+                />
                 <Select
                   register={register}
+                  errorForm={errors}
                   label="Nationality"
                   name="nationality"
                   required={true}
@@ -158,6 +188,43 @@ const FormPage = () => {
                   placeholder="Enter religion if applicable"
                 />
               </div>
+
+              {/* Emergency Contact Zone */}
+              <div className="bg-gray-100 md:bg-gray-50 p-5 rounded-2xl border border-gray-200 md:border-gray-100 space-y-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1.5 h-4 bg-blue-600 rounded-full"></div>
+                  <h3 className="text-sm font-bold text-blue-600 uppercase tracking-wider">
+                    Emergency Contact
+                  </h3>
+                </div>
+
+                <Input
+                  register={register}
+                  errorForm={errors}
+                  label="Contact Number"
+                  name="emergencyPhone"
+                  type="tel"
+                  placeholder="e.g. 0123456789"
+                  required={true}
+                />
+                <div className="grid md:grid-cols-2 gap-5">
+                  <Input
+                    register={register}
+                    label="Contact Name"
+                    name="emergencyName"
+                    placeholder="e.g. Mark Lee"
+                    required={false}
+                  />
+                  <Input
+                    register={register}
+                    label="Relationship"
+                    name="emergencyRelationship"
+                    placeholder="e.g. Spouse, Parent"
+                    required={false}
+                  />
+                </div>
+              </div>
+
               <div className="flex gap-4 cursor-pointer">
                 <input
                   type="checkbox"

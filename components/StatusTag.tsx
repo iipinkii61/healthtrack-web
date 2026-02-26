@@ -11,7 +11,7 @@ const StatusTag = ({ status }: { status: EFormStatus }) => {
     <span
       className={`px-2 py-1 rounded-full text-xs font-medium ${statusStyles[status as keyof typeof statusStyles]}`}
     >
-      {status}
+      {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
 };

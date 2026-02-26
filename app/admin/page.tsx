@@ -9,6 +9,7 @@ import PatientInfoCard from "@/components/PatientInfoCard";
 import { EFormStatus } from "@/enum/form.enum";
 import Link from "next/link";
 import StatusTag from "@/components/StatusTag";
+import { PhoneIcon } from "@/components/Icon";
 
 const AdminPage = () => {
   const [activeForm, setActiveForm] = useState<IFormData[]>([]);
@@ -93,8 +94,36 @@ const AdminPage = () => {
     },
     { header: "Gender", accessor: "gender" },
     { header: "Date of Birth", accessor: "dateOfBirth" },
+    { header: "Phone", accessor: "phone" },
+    { header: "Email", accessor: "email" },
+    { header: "Address", accessor: "address" },
+    { header: "Preferred Language", accessor: "lang" },
     { header: "Nationality", accessor: "nationality" },
-    { header: "Emergency Contact", accessor: "emergencyContact" },
+    { header: "Religion", accessor: "religion" },
+    {
+      header: "EMERGENCY CONTACT",
+      accessor: (row: IFormData) => {
+        return (
+          <div className="flex flex-col py-1">
+            <div className="flex items-center gap-1.5">
+              <span className="font-bold text-gray-900 text-sm">
+                {row?.emergencyName ?? "Not Provided"}
+              </span>
+              <span className="text-[11px] font-medium text-gray-400">
+                ({row?.emergencyRelationship ?? "-"})
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1 text-gray-500 mt-0.5">
+              <PhoneIcon />
+              <span className="text-xs tracking-tight">
+                {row?.emergencyPhone ?? "-"}
+              </span>
+            </div>
+          </div>
+        );
+      },
+    },
     {
       header: "Status",
       accessor: (row: IFormData) => (
@@ -139,7 +168,9 @@ const AdminPage = () => {
             </div>
           </div>
           <div>
-            <Table columns={columns} data={activeForm} />
+            <div className="px-4">
+              <Table columns={columns} data={activeForm} />
+            </div>
             <div className="p-4 border-t border-gray-50 flex justify-between items-center text-sm text-gray-500">
               <span>Showing 1 to 5 of 128 results</span>
               <div className="flex gap-2">

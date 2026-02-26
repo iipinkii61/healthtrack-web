@@ -6,10 +6,17 @@ export interface IUserProfile {
   emergencyContact: string;
   firstName: string;
   lastName: string;
-  middleName: string;
+  middleName?: string;
   nationality: string;
-  religion: string;
+  religion?: string;
   gender: "male" | "female" | "other";
+  phone: string;
+  email: string;
+  address: string;
+  lang: string;
+  emergencyPhone: string;
+  emergencyRelationship?: string;
+  emergencyName?: string;
 }
 
 export interface IFormData extends IUserProfile {

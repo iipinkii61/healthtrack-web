@@ -5,15 +5,23 @@ type OptionType = {
   label: string;
 };
 
-interface SelectProps<T extends FieldValues> {
+interface SelectProps {
   options: OptionType[];
   label?: string;
   required?: boolean;
-  register: UseFormRegister<T>;
-  name: keyof T;
+  register: UseFormRegister<any>;
+  errorForm?: any;
+  name: string;
 }
 
-const Select = ({ options, label, required, register, name }: SelectProps) => {
+const Select = ({
+  options,
+  label,
+  required,
+  register,
+  errorForm,
+  name,
+}: SelectProps) => {
   return (
     <div>
       {label && (
@@ -32,6 +40,11 @@ const Select = ({ options, label, required, register, name }: SelectProps) => {
           </option>
         ))}
       </select>
+      {errorForm && errorForm[name] && (
+        <span className="text-xs text-red-500">
+          {String(errorForm[name].message)}
+        </span>
+      )}
     </div>
   );
 };

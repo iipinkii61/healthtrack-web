@@ -43,7 +43,8 @@ const Table = <T extends { id: string | number }>({
                     <td key={idx} className="px-6 py-4 whitespace-nowrap">
                       {typeof col.accessor === "function"
                         ? col.accessor(item)
-                        : (item[col.accessor as keyof T] as React.ReactNode)}
+                        : (item[col.accessor as keyof T] as React.ReactNode) ||
+                          "-"}
                     </td>
                   ))}
                 </tr>

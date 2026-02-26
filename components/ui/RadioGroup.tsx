@@ -1,13 +1,20 @@
 import { UseFormRegister } from "react-hook-form";
 
-interface RadioProps<T extends FieldValues> {
-  register: UseFormRegister<T>;
+interface RadioProps {
+  register: UseFormRegister<any>;
+  errorForm?: any;
   label?: string;
   required?: boolean;
-  name: keyof T;
+  name: string;
 }
 
-const RadioGroup = ({ register, label, required, name }: RadioProps) => {
+const RadioGroup = ({
+  register,
+  errorForm,
+  label,
+  required,
+  name,
+}: RadioProps) => {
   const genders = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
@@ -47,6 +54,11 @@ const RadioGroup = ({ register, label, required, name }: RadioProps) => {
           </label>
         ))}
       </div>
+      {errorForm && errorForm[name] && (
+        <span className="text-xs text-red-500">
+          {String(errorForm[name].message)}
+        </span>
+      )}
     </div>
   );
 };
