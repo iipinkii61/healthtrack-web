@@ -5,9 +5,10 @@ import { pusherClient } from "../../config/pusher";
 import Table from "@/components/ui/Table";
 import Button from "@/components/ui/Button";
 import { IFormData, ImemberEventData, IUserProfile } from "@/types/data.type";
-import PatientInfoCard from "@/components/PatientInfoCard/PatientInfoCard";
+import PatientInfoCard from "@/components/PatientInfoCard";
 import { EFormStatus } from "@/enum/form.enum";
 import Link from "next/link";
+import StatusTag from "@/components/StatusTag";
 
 const AdminPage = () => {
   const [activeForm, setActiveForm] = useState<IFormData[]>([]);
@@ -97,17 +98,7 @@ const AdminPage = () => {
     {
       header: "Status",
       accessor: (row: IFormData) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-medium ${
-            row.status === EFormStatus.ACTIVE
-              ? "bg-green-100 text-green-700"
-              : row.status === EFormStatus.SUBMIT
-                ? "bg-blue-100 text-blue-700"
-                : "bg-gray-100 text-gray-500"
-          }`}
-        >
-          {row.status}
-        </span>
+        <StatusTag status={row.status as EFormStatus} />
       ),
     },
   ];

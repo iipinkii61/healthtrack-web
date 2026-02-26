@@ -1,5 +1,6 @@
 import { EFormStatus } from "@/enum/form.enum";
 import { IFormData } from "@/types/data.type";
+import StatusTag from "./StatusTag";
 
 const PatientInfoCard = ({ formData }: { formData: IFormData }) => {
   return (
@@ -32,17 +33,7 @@ const PatientInfoCard = ({ formData }: { formData: IFormData }) => {
               </p>
             </div>
           </div>
-          <span
-            className={`px-2 py-1 rounded-full text-xs font-medium ${
-              formData.status === EFormStatus.ACTIVE
-                ? "bg-green-100 text-green-700"
-                : formData.status === EFormStatus.SUBMIT
-                  ? "bg-blue-100 text-blue-700"
-                  : "bg-gray-100 text-gray-500"
-            }`}
-          >
-            {formData.status}
-          </span>
+          <StatusTag status={formData.status as EFormStatus} />
         </div>
 
         <div className="grid grid-cols-2 gap-y-4 mb-5">

@@ -10,6 +10,8 @@ import Select from "../../components/ui/Select";
 import { NATIONALITIES } from "../../constant/nationality.constant";
 import { ArrowRightIcon } from "@/components/Icon";
 import Link from "next/link";
+import Modal from "@/components/ui/Modal";
+import { useRouter } from "next/navigation";
 
 const FormPage = () => {
   const {
@@ -20,8 +22,10 @@ const FormPage = () => {
   } = useForm({
     mode: "onChange",
   });
+  const router = useRouter();
   const allFields = watch();
   const [userId, setUserId] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   // subscribe to channel and get userId to form
   useEffect(() => {
@@ -55,13 +59,17 @@ const FormPage = () => {
 
   // submit form
   const handleFormSubmit = async () => {
-    await fetch("/api/submit-form", {
-      method: "POST",
-      body: JSON.stringify({
-        id: userId,
-        status: "submit",
-      }),
-    });
+    try {
+      await fetch("/api/submit-form", {
+        method: "POST",
+        body: JSON.stringify({
+          id: userId,
+          status: "submit",
+        }),
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -82,7 +90,7 @@ const FormPage = () => {
           </p>
         </div>
 
-        <div className="md:bg-white md:shadow-lg rounded-xl mt-10 md:p-5 w-full">
+        <div className="md:bg-white md:shadow-lg rounded-xl mt-10 md:p-6 w-full">
           <div>
             <form
               onSubmit={handleSubmit(handleFormSubmit)}
@@ -180,6 +188,22 @@ const FormPage = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          router.push("/");
+        }}
+        title={"Submission Successful!"}
+        description={
+          <span>
+            Thank you for providing your information. Your data has been
+            securely received by the
+            <span className="font-semibold text-blue-600"> HealthTrack </span>
+            team.
+          </span>
+        }
+      />
     </div>
   );
 };
